@@ -1,0 +1,24 @@
+# igonore .env
+.env
+
+# igonore venv
+qcsg/
+
+# ignore .pyc files
+*.pyc
+
+# ignore .DS_Store
+.DS_Store
+
+# ignore .idea
+.idea/
+
+# ignore .vscode
+.vscode/
+
+# ignore __pycache__
+__pycache__/
+
+# ignore .pytest_cache
+.pytest_cache/
+
