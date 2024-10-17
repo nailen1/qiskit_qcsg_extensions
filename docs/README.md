@@ -40,6 +40,12 @@ ket = Ket('+')
 ket.latex
 ```
 
+### Output
+
+$$
+\frac{\sqrt{2}}{2} \left|0\right\rangle + \frac{\sqrt{2}}{2} \left|1\right\rangle
+$$
+
 With `qiskit_qcsg_extensions`, the user can directly use the `Ket` class, which simplifies the quantum state creation and makes the interaction more aligned with physics notation.
 
 ### Examples
@@ -49,9 +55,8 @@ With `qiskit_qcsg_extensions`, the user can directly use the `Ket` class, which 
 ```python
 from qiskit_qcsg_extensions import Ket
 
-# Create a |+⟩ state and display it in LaTeX
+# Create a |1⟩ state and display it in LaTeX
 ket = Ket('1')
-ket.latex
 ```
 
 #### Multi-Qubit State
@@ -59,7 +64,6 @@ ket.latex
 ```python
 # Create a |00⟩ state and display it in LaTeX
 ket = Ket('00')
-ket.latex
 ```
 
 #### Bell State
@@ -67,7 +71,6 @@ ket.latex
 ```python
 # Create the Bell state |Φ+⟩
 bell = Bell(0)
-bell.latex
 ```
 
 ## API Reference
@@ -77,8 +80,12 @@ bell.latex
     - `latex`: Returns the LaTeX representation of the quantum state.
     - `amplitudes`: Accesses the statevector amplitudes.
     - `probabilities`: Computes the probability distribution.
+    - `df`: Returns a Pandas DataFrame containing the amplitudes and probabilities.
   - **Methods**:
-    - `get_df()`: Returns a Pandas DataFrame containing the amplitudes and probabilities.
+    - **Qiskit `Statevector` Methods**: All methods from Qiskit's `Statevector` class are directly available. This includes methods like:
+      - `evolve()`: Evolves the quantum state according to a given operator.
+      - `tensor()`: Performs the tensor product with another state.
+      - and many more...
 
 ## Contribution
 

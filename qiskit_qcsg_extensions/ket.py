@@ -21,7 +21,7 @@ class Ket:
 
     def create_state(self, labels):
         # Bell state
-        if isinstance(labels, tuple) and labels[0] == 'Bell':
+        if isinstance(labels, tuple) and labels[0].upper() == 'BELL':
             bell_index = labels[1]
             return self.get_bell_state(bell_index)
         
@@ -71,6 +71,10 @@ class Ket:
         data = {'basis': basis, 'amplitudes': amplitudes, 'probabilities': probabilities}
         df = pd.DataFrame(data).set_index('basis')
         return df
+    
+    def tensor(self, ket):
+        # Bell(1).state.tensor(Bell(1).state).draw('latex') 
+        return self.state.tensor(ket.state)   
 
 
 class Bell(Ket):
