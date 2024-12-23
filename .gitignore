@@ -22,3 +22,6 @@ __pycache__/
 # ignore .pytest_cache
 .pytest_cache/
 
+
+qcsg/
+env-qiskit/

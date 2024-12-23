@@ -55,14 +55,14 @@ With `qiskit_qcsg_extensions`, the user can directly use the `Ket` class, which 
 ```python
 from qiskit_qcsg_extensions import Ket
 
-# Create a |1⟩ state and display it in LaTeX
+# Create a |1⟩ state
 ket = Ket('1')
 ```
 
 #### Multi-Qubit State
 
 ```python
-# Create a |00⟩ state and display it in LaTeX
+# Create a |00⟩ state
 ket = Ket('00')
 ```
 
