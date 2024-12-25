@@ -1,2 +1,2 @@
-from .solve_week3 import *
+from .general_utils import *
 from .week01_problem01 import *

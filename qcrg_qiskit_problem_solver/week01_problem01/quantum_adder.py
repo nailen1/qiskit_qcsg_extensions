@@ -1,4 +1,5 @@
-from .external_functions import set_initial, set_input_qubits, set_f_s, set_f_c, set_measure_on_s, set_measure_on_c, set_the_oracle, draw_qc, set_job_on_simulator, extend_counts
+from .external_functions import set_initial, set_input_qubits, set_f_s, set_f_c, set_measure_on_s, set_measure_on_c, set_the_oracle
+from qcrg_qiskit_problem_solver.general_utils import simulate_quantum_circuit, extend_counts, draw_qc
 from qiskit.visualization import plot_histogram
 
 class QuantumAdder:
@@ -11,7 +12,7 @@ class QuantumAdder:
         self.measure_s = self.set_measure_s()
         self.measure_c = self.set_measure_c()
         self.oracle = self.set_oracle()
-        self.full = self.set_oracle(include_input=True)
+        self.full = self.set_full_circuit()
         self.draw = self.draw_qc()
         self.draw_full =self.draw_qc_full()
 
@@ -23,40 +24,48 @@ class QuantumAdder:
         qc = set_input_qubits(self.a, self.b)
         return qc
 
-    def set_f_s(self, include_input=False):
-        qc = self.reset_input() if include_input else self.set_initial()
+    def set_f_s(self, input=None):
+        qc = self.set_initial() if input is None else input
         qc = set_f_s(qc)
         self.xor = qc
         return qc
     
-    def set_f_c(self, include_input=False):
-        qc = self.reset_input() if include_input else self.set_initial()
+    def set_f_c(self, input=None):
+        qc = self.set_initial() if input is None else input
         qc = set_f_c(qc)
         self.toffoli = qc
         return qc
     
-    def set_measure_s(self, include_input=False):
-        qc = self.reset_input() if include_input else self.set_initial()
+    def set_measure_s(self, input=None):
+        qc = self.set_initial() if input is None else input
         qc = set_measure_on_s(qc)
         return qc
 
-    def set_measure_c(self, include_input=False):
-        qc = self.reset_input() if include_input else self.set_initial()
+    def set_measure_c(self, input=None):
+        qc = self.set_initial() if input is None else input
         qc = set_measure_on_c(qc)
         return qc
 
-    def set_oracle(self, include_input=False):
-        qc = self.reset_input() if include_input else self.set_initial()
+    def set_oracle(self, input=None):
+        qc = self.set_initial() if input is None else input
         qc_oracle = set_the_oracle(qc)
         self.f = qc_oracle
         return qc_oracle
+    
+    def set_full_circuit(self):
+        qc = self.reset_input()
+        qc = self.set_oracle(qc)
+        self.full = qc
+        return qc
     
     def draw_qc(self):
         dct = {
             'initial': draw_qc(self.initial),
             'input': draw_qc(self.input),
             'xor': draw_qc(self.xor),
+            'f_s': draw_qc(self.f_s),
             'toffoli': draw_qc(self.xor),
+            'f_c': draw_qc(self.f_c),
             'measure_s': draw_qc(self.measure_s),
             'measure_c': draw_qc(self.measure_c),
             'oracle': draw_qc(self.oracle),
@@ -69,16 +78,16 @@ class QuantumAdder:
         output = draw_qc(self.full)
         return output
 
-    def run(self):
-        job = set_job_on_simulator(self.full)
-        self.job = job
-        self.result = job.result()
+    def simulate(self):
+        simulation = simulate_quantum_circuit(self.full)
+        self.simulation = simulation
+        self.result = simulation.result()
         self.counts = self.result.get_counts()
-        return job
+        return simulation
     
     def plot(self):
         if not hasattr(self, 'counts'):
-            raise ValueError('You need to run the circuit first: self.run()')
+            raise ValueError('You need to run simulator the circuit first: self.simulate()')
         extended_counts = extend_counts(counts=self.counts)
         output = plot_histogram(extended_counts)
         return output

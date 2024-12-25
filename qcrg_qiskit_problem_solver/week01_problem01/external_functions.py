@@ -1,5 +1,5 @@
 from qiskit import QuantumCircuit
-from qiskit_aer import AerSimulator
+from qcrg_qiskit_problem_solver.general_utils import simulate_quantum_circuit, get_result_of_simualtion
 
 def set_initial():
     qc = QuantumCircuit(4,2)
@@ -79,39 +79,17 @@ def set_quantum_adder(qc):
 set_the_oracle = set_quantum_adder
 set_f = set_quantum_adder
 
-def set_job_on_simulator(qc, shots=1024):
-    simulator = AerSimulator()
-    job = simulator.run(qc, shots=shots)
-    return job
-
-def get_result_from_job(job):
-    result = job.result()
-    return result
-
-
 def run_quantum_adder(a=None, b=None, two_qubits=None, shots=1024):
     qc = set_input_qubits(a, b, two_qubits)
     qc = set_f(qc)
-    job = set_job_on_simulator(qc, shots)
-    result = get_result_from_job(job)
-    counts_sc = result.get_counts()
+    simulation = simulate_quantum_circuit(qc, shots)
+    result = get_result_of_simualtion(simulation)
+    counts = result.get_counts()
     if a is not None and b is not None and two_qubits is None:
         two_qubits = str(a) + str(b)
     dct = {
         'input_ab': two_qubits,
-        'output_counts_sc': counts_sc,  
+        'output_counts': counts,  
         'qc': qc    
     }
     return dct
-
-def extend_counts(counts):
-    output_format = list(counts.keys())[0]
-    n = len(output_format)
-    possible_results = [format(i, f'0{n}b') for i in range(2**n)]
-    extended_counts = {result: counts.get(result, 0) for result in possible_results}
-    for key, value in counts.items():
-        extended_counts[key] = value
-    return extended_counts
-
-def draw_qc(qc):
-    return qc.draw(output='mpl')
