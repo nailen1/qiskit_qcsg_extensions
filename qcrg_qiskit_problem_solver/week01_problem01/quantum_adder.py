@@ -1,4 +1,4 @@
-from .external_functions import set_initial, set_input_qubits, set_f_s, set_f_c, set_measure_on_s, set_measure_on_c, set_the_oracle
+from .quantum_adder_utils import set_initial, set_input_qubits, set_f_s, set_f_c, set_measure_on_s, set_measure_on_c, set_the_oracle
 from qcrg_qiskit_problem_solver.general_utils import simulate_quantum_circuit, extend_counts, draw_qc
 from qiskit.visualization import plot_histogram
 
